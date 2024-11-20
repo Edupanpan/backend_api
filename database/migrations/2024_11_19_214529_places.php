@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('places', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->date('fecha_visita');
             $table->string('nombre');
             $table->string('direccion');
-            $table->string('imagen');
-            $table->timestamps();
+            $table->string('url_imagen');
+            $table->date('fecha_visita');
         });
     }
 

@@ -28,7 +28,7 @@ class PlaceController extends Controller
     {
         $place = Place::find($id);
         if ($place) {
-            return response()->json(['message' => 'Lugar encontrado', 'data' => $place]);
+            return response()->json([$place]);
         }
         return response()->json(['message' => 'Lugar no encontrado'], 404);
     }
@@ -37,10 +37,10 @@ class PlaceController extends Controller
     public function postOne(Request $request)
     {   
         $validator = Validator::make($request->all(), [
-            'fecha_visita' => 'required|date',
             'nombre' => 'required|string',
             'direccion' => 'required|string',
-            'imagen' => 'required|string'
+            'url_imagen' => 'required|string',
+            'fecha_visita' => 'required|date',
         ]);
 
         if ($validator->fails()) {
@@ -48,21 +48,17 @@ class PlaceController extends Controller
         }
 
         $places = Place::create(
-        ['fecha_visita'=>$request->fecha_visita,
-        'nombre'=>$request->nombre,
-        'direccion'=>$request->direccion,
-        'imagen'=>$request->imagen]);
+            ['nombre'=>$request->nombre,
+            'direccion'=>$request->direccion,
+            'imagen'=>$request->imagen,
+            'fecha_visita'=>$request->fecha_visita]);
         if(!$places){
             $data=[
                 'message'=>'Error al crear el lugar'
             ];
             return response()->json($data);
         }
-        $data=[
-            'message'=>'Lugar creado',
-            'data'=>$places
-        ];
-        return response()->json($data);
+        return response()->json($places);
             
     }
     public function putchOne(Request $request, $id)
@@ -83,7 +79,7 @@ class PlaceController extends Controller
                 $place->direccion = $request->direccion;
                 $place->imagen = $request->imagen;
                 $place->save();
-                return response()->json(['message' => 'Lugar actualizado', 'data' => $place]);
+                return response()->json([$place]);
         }
         return response()->json(['message' => 'Lugar no encontrado'], 404);
      
