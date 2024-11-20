@@ -24,9 +24,15 @@ class PlaceController extends Controller
         ];
         return response()->json($data);
     }
-    public function getId(){
-        return"hola";
+    public function getId($id)
+    {
+        $place = Place::find($id);
+        if ($place) {
+            return response()->json(['message' => 'Lugar encontrado', 'data' => $place]);
+        }
+        return response()->json(['message' => 'Lugar no encontrado'], 404);
     }
+    
 
     public function postOne(Request $request)
     {   
@@ -59,12 +65,38 @@ class PlaceController extends Controller
         return response()->json($data);
             
     }
-    public function putchOne(Request $request)
+    public function putchOne(Request $request, $id)
     {
-        return"esto deberia actualizar un dato en la base de datos";
+        $place = Place::find($id);
+        if ($place) {
+                $validator = Validator::make($request->all(), [
+                    'fecha_visita' => 'required|date',
+                    'nombre' => 'required|string',
+                    'direccion' => 'required|string',
+                    'imagen' => 'required|string'
+                ]);
+                if  ($validator->fails()) {
+                    return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()]);
+                }
+                $place->fecha_visita = $request->fecha_visita;
+                $place->nombre = $request->nombre;
+                $place->direccion = $request->direccion;
+                $place->imagen = $request->imagen;
+                $place->save();
+                return response()->json(['message' => 'Lugar actualizado', 'data' => $place]);
+        }
+        return response()->json(['message' => 'Lugar no encontrado'], 404);
+     
     }
-    public function deleteOne(Request $request)
+    
+    
+    public function deleteOne($id)
     {
-        return"esto deberia eliminar un dato en la base de datos";
+        $place = Place::find($id);
+        if ($place) {
+            $place->delete();
+            return response()->json(['message' => 'Lugar eliminado']);
+        }
+        return response()->json(['message' => 'Lugar no encontrado'], 404);
     }
 }
