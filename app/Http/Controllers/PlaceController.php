@@ -50,7 +50,7 @@ class PlaceController extends Controller
         $places = Place::create(
             ['nombre'=>$request->nombre,
             'direccion'=>$request->direccion,
-            'imagen'=>$request->imagen,
+            'url_imagen'=>$request->url_imagen,
             'fecha_visita'=>$request->fecha_visita]);
         if(!$places){
             $data=[
@@ -66,18 +66,18 @@ class PlaceController extends Controller
         $place = Place::find($id);
         if ($place) {
                 $validator = Validator::make($request->all(), [
-                    'fecha_visita' => 'required|date',
                     'nombre' => 'required|string',
                     'direccion' => 'required|string',
-                    'imagen' => 'required|string'
+                    'url_imagen' => 'required|string',
+                    'fecha_visita' => 'required|date'
                 ]);
                 if  ($validator->fails()) {
                     return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()]);
                 }
-                $place->fecha_visita = $request->fecha_visita;
                 $place->nombre = $request->nombre;
                 $place->direccion = $request->direccion;
-                $place->imagen = $request->imagen;
+                $place->url_imagen = $request->url_imagen;
+                $place->fecha_visita = $request->fecha_visita;
                 $place->save();
                 return response()->json([$place]);
         }

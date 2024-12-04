@@ -15,8 +15,10 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('nombre');
             $table->string('direccion');
-            $table->string('url_imagen');
+            $table->text('url_imagen',255);
             $table->date('fecha_visita');
+            $table->timestamps();
+            $table->unique('id');
         });
     }
 
