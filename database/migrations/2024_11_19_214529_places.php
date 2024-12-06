@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('url_imagen',255);
             $table->date('fecha_visita');
             $table->timestamps();
-            $table->unique('id');
+            
         });
     }
 
