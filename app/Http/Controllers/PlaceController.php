@@ -8,7 +8,7 @@ use App\Models\Place;
 class PlaceController extends Controller
 {
     public function getAll()
-    {   
+    {
         $places = Place::all();
         if ($places->isEmpty()) {
             return response()->json([
@@ -24,21 +24,6 @@ class PlaceController extends Controller
         ], 200);
     }
 
-    public function getId($id)
-    {
-        $place = Place::find($id);
-        if ($place) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Lugar encontrado',
-                'data' => $place
-            ], 200);
-        }
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Lugar no encontrado'
-        ], 404);
-    }
 
     public function postOne(Request $request)
     {   
